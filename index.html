@@ -4,147 +4,160 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clap Nitzan</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0A0F1E;
+      background: #111;
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-    }
-
-    .blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(130px);
-      opacity: 0.16;
-      pointer-events: none;
-    }
-    .blob-1 { width: 500px; height: 500px; background: #6366F1; top: -160px; left: -140px; }
-    .blob-2 { width: 380px; height: 380px; background: #818CF8; bottom: -120px; right: -100px; }
-
-    .card {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2rem;
+      padding: 3rem 1.2rem;
+      color: #fff;
     }
 
     .headline {
       font-family: 'Inter', sans-serif;
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
       font-weight: 300;
-      color: #C7D2FE;
-      letter-spacing: 0.06em;
-      margin-bottom: 2.8rem;
-      opacity: 0.8;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 1.8rem;
+      text-align: center;
     }
 
+    /* COUNTDOWN */
     .countdown {
       display: flex;
-      gap: clamp(1rem, 4vw, 2.5rem);
       align-items: flex-start;
       justify-content: center;
+      gap: clamp(0.4rem, 2vw, 1.2rem);
+      margin-bottom: 4rem;
     }
 
     .unit {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .digit {
-      font-family: 'Oswald', sans-serif;
-      font-size: clamp(3.5rem, 12vw, 7rem);
-      font-weight: 600;
-      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 16vw, 9rem);
       line-height: 1;
-      letter-spacing: -0.02em;
-      transition: text-shadow 0.1s ease;
+      color: #fff;
+      letter-spacing: 0.02em;
+      transition: color 0.1s;
     }
 
-    .digit.tick {
-      text-shadow: 0 0 20px rgba(99,102,241,0.7), 0 0 50px rgba(99,102,241,0.4);
-    }
+    .digit.tick { color: #f97316; }
 
     .unit-label {
-      font-size: clamp(0.55rem, 1.5vw, 0.65rem);
-      font-weight: 400;
+      font-size: clamp(0.5rem, 1.5vw, 0.6rem);
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #C7D2FE;
-      opacity: 0.4;
+      color: #555;
     }
 
     .colon {
-      font-family: 'Oswald', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 600;
-      color: #6366F1;
-      opacity: 0.5;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 12vw, 7rem);
       line-height: 1;
-      margin-top: 0.1em;
+      color: #f97316;
+      margin-top: 0.05em;
     }
 
     .done {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: #C7D2FE;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #f97316;
       letter-spacing: 0.1em;
-      margin-top: 1rem;
+      margin-bottom: 4rem;
+    }
+
+    /* DIVIDER */
+    hr {
+      border: none;
+      border-top: 1px solid #222;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    /* MESSAGE */
+    .message {
+      max-width: 600px;
+      width: 100%;
+      text-align: right;
+      direction: rtl;
+      border-right: 3px solid #f97316;
+      padding-right: 1.4rem;
+    }
+
+    .message p {
+      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+      font-weight: 300;
+      color: #ccc;
+      line-height: 2;
+    }
+
+    .message strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .message .highlight {
+      color: #f97316;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
+  <p class="headline">Clap Nitzan in</p>
 
-  <div class="card">
-    <p class="headline">Clap Nitzan in</p>
-    <div class="countdown" id="countdown">
-      <div class="unit">
-        <span class="digit" id="d-days">00</span>
-        <span class="unit-label">Days</span>
-      </div>
-      <div class="colon">:</div>
-      <div class="unit">
-        <span class="digit" id="d-hours">00</span>
-        <span class="unit-label">Hours</span>
-      </div>
-      <div class="colon">:</div>
-      <div class="unit">
-        <span class="digit" id="d-mins">00</span>
-        <span class="unit-label">Minutes</span>
-      </div>
-      <div class="colon">:</div>
-      <div class="unit">
-        <span class="digit" id="d-secs">00</span>
-        <span class="unit-label">Seconds</span>
-      </div>
+  <div class="countdown" id="countdown">
+    <div class="unit">
+      <span class="digit" id="d-days">00</span>
+      <span class="unit-label">Days</span>
     </div>
-    <p class="done" id="done-msg" style="display:none">🎉 Time to clap nitzan!</p>
+    <div class="colon">:</div>
+    <div class="unit">
+      <span class="digit" id="d-hours">00</span>
+      <span class="unit-label">Hours</span>
+    </div>
+    <div class="colon">:</div>
+    <div class="unit">
+      <span class="digit" id="d-mins">00</span>
+      <span class="unit-label">Minutes</span>
+    </div>
+    <div class="colon">:</div>
+    <div class="unit">
+      <span class="digit" id="d-secs">00</span>
+      <span class="unit-label">Seconds</span>
+    </div>
   </div>
-  <blockquote style="font-size: 1.4rem; line-height: 1.7; color: #d32f2f; text-align: center; margin: 40px auto; padding: 30px; border-left: 8px solid #d32f2f; background: #fffaf0;">
-    ניצן,<br><br>
-    
-    אתה עשית את הטעות הכי גדולה של חייך.<br>
-    חשבת שאתה יכול לנצח אותי במתמטיקה בגרות? 😏<br><br>
-    
-    עכשיו יש לי זכות חוקית לחלק לך <strong>חמש כאפות</strong> מתי שבא לי.<br>
-    ואני מבטיח לך שזה לא יהיה נעים.<br><br>
-    
-    <strong>תתכונן.</strong> הספירה לאחור כבר רצה.<br>
-    וזה <em>באמת</em> לא הולך להיות נעים.
-  </blockquote>
+
+  <p class="done" id="done-msg" style="display:none">🎉 Time to clap Nitzan!</p>
+
+  <hr />
+
+  <div class="message">
+    <p>
+      ניצן,<br>
+      אתה עשית את <strong>הטעות הכי גדולה של חייך</strong>.<br>
+      חשבת שאתה יכול לנצח אותי במתמטיקה בגרות?😏<br>
+      אז עכשיו אני יכול לתת לך 5 כאפות. בקרוב תגיע הראשונה.<br>
+      ואני מבטיח לך שזה לא יהיה נעים.<br>
+      <strong>תתכונן.</strong> הספירה לאחור כבר רצה.<br>
+    </p>
+  </div>
 
   <script>
     const TARGET = new Date('2026-06-29T22:00:00');
@@ -158,7 +171,7 @@
         el.classList.remove('tick');
         void el.offsetWidth;
         el.classList.add('tick');
-        setTimeout(() => el.classList.remove('tick'), 400);
+        setTimeout(() => el.classList.remove('tick'), 300);
       }
     }
 
