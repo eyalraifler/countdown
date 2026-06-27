@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clap Nitzan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0A0F1E;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: 0.16;
+      pointer-events: none;
+    }
+    .blob-1 { width: 500px; height: 500px; background: #6366F1; top: -160px; left: -140px; }
+    .blob-2 { width: 380px; height: 380px; background: #818CF8; bottom: -120px; right: -100px; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .headline {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 300;
+      color: #C7D2FE;
+      letter-spacing: 0.06em;
+      margin-bottom: 2.8rem;
+      opacity: 0.8;
+    }
+
+    .countdown {
+      display: flex;
+      gap: clamp(1rem, 4vw, 2.5rem);
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .digit {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 600;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      transition: text-shadow 0.1s ease;
+    }
+
+    .digit.tick {
+      text-shadow: 0 0 20px rgba(99,102,241,0.7), 0 0 50px rgba(99,102,241,0.4);
+    }
+
+    .unit-label {
+      font-size: clamp(0.55rem, 1.5vw, 0.65rem);
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #C7D2FE;
+      opacity: 0.4;
+    }
+
+    .colon {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 600;
+      color: #6366F1;
+      opacity: 0.5;
+      line-height: 1;
+      margin-top: 0.1em;
+    }
+
+    .done {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #C7D2FE;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="card">
+    <p class="headline">clap nitzan in</p>
+    <div class="countdown" id="countdown">
+      <div class="unit">
+        <span class="digit" id="d-days">00</span>
+        <span class="unit-label">Days</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="unit">
+        <span class="digit" id="d-hours">00</span>
+        <span class="unit-label">Hours</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="unit">
+        <span class="digit" id="d-mins">00</span>
+        <span class="unit-label">Minutes</span>
+      </div>
+      <div class="colon">:</div>
+      <div class="unit">
+        <span class="digit" id="d-secs">00</span>
+        <span class="unit-label">Seconds</span>
+      </div>
+    </div>
+    <p class="done" id="done-msg" style="display:none">🎉 Time to clap nitzan!</p>
+  </div>
+
+  <script>
+    const TARGET = new Date('2026-06-29T22:00:00');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function pulse(id, val) {
+      const el = document.getElementById(id);
+      if (el.textContent !== val) {
+        el.textContent = val;
+        el.classList.remove('tick');
+        void el.offsetWidth;
+        el.classList.add('tick');
+        setTimeout(() => el.classList.remove('tick'), 400);
+      }
+    }
+
+    function tick() {
+      const diff = TARGET - Date.now();
+      if (diff <= 0) {
+        ['d-days','d-hours','d-mins','d-secs'].forEach(id => document.getElementById(id).textContent = '00');
+        document.getElementById('countdown').style.opacity = '0.3';
+        document.getElementById('done-msg').style.display = 'block';
+        return;
+      }
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000) / 60000);
+      const secs  = Math.floor((diff % 60000) / 1000);
+      pulse('d-days',  pad(days));
+      pulse('d-hours', pad(hours));
+      pulse('d-mins',  pad(mins));
+      pulse('d-secs',  pad(secs));
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
